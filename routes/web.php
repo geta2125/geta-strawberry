@@ -26,7 +26,7 @@ Route::get('/nim/{param1?}', function ($param1 = '') {
 
 Route::get('/mahasiswa', function () {
     return 'Halo Mahasiswa';
-})->name('mahasiswa.show');
+})->name('route.mahasiswa');
 
 
 Route::get('/mahasiswa/{param1}', [MahasiswaController::class, 'show']);
