@@ -46,7 +46,8 @@ $request->validate([
         $data['email'] = $request->email;
         $data['pertanyaan'] = $request->pertanyaan;
 
-        return view('home-question-respon', $data);
+       // return view('home-question-respon', $data);
+        return redirect()->route('home')->with('info', 'hai terima kasih </b>'.$data['nama'].'</b> data pertanyaan berhasil </b>'.$data['pertanyaan'].'</b>. silahkan cek email <b>'.$data['email'].'</b>')->withInput();
     }
 
     /**
