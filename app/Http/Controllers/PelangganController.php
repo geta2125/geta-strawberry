@@ -9,11 +9,20 @@ class PelangganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['dataPelanggan'] = Pelanggan::all();
-        return view('admin.pelanggan.index', $data);
+        // Kolom yang difilter biasa
+        $filterableColumns = ['gender'];
 
+        // Kolom yang bisa dicari lewat search()
+        $searchableColumns = ['first_name'];
+        // sesuaikan dengan kolom TABEL pelanggan kamu
+
+        $data['dataPelanggan'] = Pelanggan::filter($request, $filterableColumns)
+            ->search($request, $searchableColumns)
+            ->paginate(10)->withQueryString();
+
+        return view('admin.pelanggan.index', $data);
     }
 
     /**
@@ -65,7 +74,7 @@ class PelangganController extends Controller
     public function update(Request $request, string $id)
     {
         // dd($request->all());
-        $pelanggan_id       = $id;
+        $pelanggan_id            = $id;
         $pelanggan               = Pelanggan::findOrFail($pelanggan_id);
         $pelanggan['first_name'] = $request->first_name;
         $pelanggan['last_name']  = $request->last_name;
@@ -74,8 +83,8 @@ class PelangganController extends Controller
         $pelanggan['email']      = $request->email;
         $pelanggan['phone']      = $request->phone;
 
-        $pelanggan->update();
-        return redirect()->route('pelanggan.index')->with('success', 'Update Data Berhasil!');
+        $pelanggan->save();
+        return redirect()->route('pelanggan.index')->with('success', 'Perubahana Data Berhasil!');
     }
 
     /**
@@ -83,9 +92,10 @@ class PelangganController extends Controller
      */
     public function destroy(string $id)
     {
-        $pelanggan_id = Pelanggan::findOrFail($id);
+        $pelanggan = Pelanggan::findOrFail($id);
+        $pelanggan->delete();
 
-        $pelanggan_id->delete();
         return redirect()->route('pelanggan.index')->with('success', 'Hapus Data Berhasil!');
     }
+
 }
