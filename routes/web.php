@@ -49,3 +49,11 @@ Route::get('dashboard', [DashboardController::class, 'index'])
 Route::resource('pelanggan', PelangganController::class);
 
 Route::resource('user', UserController::class);
+
+// ===============================
+// Route Multiple Upload Pelanggan
+// ===============================
+Route::prefix('pelanggan')->name('pelanggan.')->controller(PelangganController::class)->group(function () {
+    Route::post('upload-files', 'uploadFiles')->name('upload-files');
+    Route::delete('file/{fileId}', 'deleteFile')->name('delete-file');
+});

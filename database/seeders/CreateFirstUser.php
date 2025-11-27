@@ -14,10 +14,14 @@ class CreateFirstUser extends Seeder
      */
     public function run(): void
     {
-        User::created([
+        // 1. Buat User Admin Manual
+        User::create([
             'name' => 'Admin',
             'email' => 'gatot@pcr.ac.id',
             'password' => Hash::make('gatotkaca')
         ]);
+
+        // 2. Buat 50 User Random (dengan foto otomatis dari Factory)
+        User::factory(50)->create();
     }
 }

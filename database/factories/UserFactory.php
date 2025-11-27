@@ -5,40 +5,38 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage; // <--- Wajib ada
+use Illuminate\Support\Facades\Http;    // <--- Wajib ada
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
-
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
+        $name = fake()->name();
+
+        // 1. Siapkan nama file unik di folder profile_pictures
+        // Folder ini harus sesuai dengan logic di Controller Anda
+        $filename = 'profile_pictures/' . Str::random(20) . '.png';
+
+        // 2. Download gambar dummy berdasarkan inisial nama
+        // Contoh: Budi Santoso -> Gambar Inisial "BS"
+        $imageUrl = "https://ui-avatars.com/api/?name=" . urlencode($name) . "&background=random&color=fff&size=200";
+
+        // 3. Ambil konten gambar dari internet
+        $imageContent = Http::get($imageUrl)->body();
+
+        // 4. Simpan file fisik ke storage (storage/app/public/profile_pictures)
+        Storage::disk('public')->put($filename, $imageContent);
+
         return [
-            'name' => fake()->name(),
+            'name' => $name,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
-        ];
-    }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+            // 5. Simpan path string ke database
+            'profile_picture' => $filename,
+        ];
     }
 }

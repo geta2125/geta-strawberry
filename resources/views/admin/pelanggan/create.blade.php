@@ -1,7 +1,8 @@
-@extends ('layouts.admin.app')
+@extends('layouts.admin.app')
 
 @section('content')
-    {{-- start main content --}}
+
+    {{-- HEADER PAGE --}}
     <div class="py-4">
         <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
             <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -19,84 +20,145 @@
                 <li class="breadcrumb-item active" aria-current="page">Tambah Pelanggan</li>
             </ol>
         </nav>
-        <div class="d-flex justify-content-between w-100 flex-wrap">
+
+        <div class="d-flex justify-content-between w-100 flex-wrap align-items-center">
             <div class="mb-3 mb-lg-0">
-                <h1 class="h4">Tambah Pelanggan</h1>
-                <p class="mb-0">Form untuk menambahkan data pelanggan baru.</p>
+                <h1 class="h4 fw-bold">Tambah Pelanggan</h1>
+                <p class="mb-0 text-muted">Tambahkan data pelanggan baru dan upload dokumen pendukung.</p>
             </div>
             <div>
-                <a href="{{ route('pelanggan.index') }}" class="btn btn-primary"><i class="far fa-question-circle me-1"></i>
-                    Kembali</a>
+                <a href="{{ route('pelanggan.index') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-1"></i> Kembali
+                </a>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12 mb-4">
-            <div class="card border-0 shadow components-section">
-                <div class="card-body">
-                    <form action="{{ route('pelanggan.store') }}" method="POST">
-                        @csrf
-                        <div class="row mb-4">
-                            <div class="col-lg-4 col-sm-6">
-                                <!-- First Name -->
-                                <div class="mb-3">
-                                    <label for="first_name" class="form-label">First name</label>
-                                    <input type="text" name="first_name" id="first_name" class="form-control" required>
-                                </div>
+    {{-- FORM UTAMA (Create) --}}
+    {{-- Arahkan ke route store, method POST --}}
+    <form action="{{ route('pelanggan.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
-                                <!-- Last Name -->
-                                <div class="mb-3">
-                                    <label for="last_name" class="form-label">Last name</label>
-                                    <input type="text" name="last_name" id="last_name" class="form-control" required>
-                                </div>
-                            </div>
+        <div class="row">
 
-                            <div class="col-lg-4 col-sm-6">
-                                <!-- Birthday -->
-                                <div class="mb-3">
-                                    <label for="birthday" class="form-label">Birthday</label>
-                                    <input type="date" name="birthday" id="birthday" class="form-control">
-                                </div>
+            {{-- KOLOM KIRI: FORM DATA UTAMA --}}
+            <div class="col-12 col-xl-8 mb-4">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                        <h5 class="mb-0 fw-bold text-primary">Informasi Data Diri</h5>
+                    </div>
+                    <div class="card-body pt-3">
 
-                                <!-- Gender -->
-                                <div class="mb-3">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select id="gender" name="gender" class="form-select">
-                                        <option value="">-- Pilih --</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                    </select>
+                        {{-- Group: Nama --}}
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" name="first_name" id="first_name"
+                                        class="form-control @error('first_name') is-invalid @enderror"
+                                        placeholder="Nama Depan" value="{{ old('first_name') }}" required>
+                                    <label for="first_name">First Name</label>
+                                    @error('first_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
-
-                            <div class="col-lg-4 col-sm-12">
-                                <!-- Email -->
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="text" name="email" id="email" class="form-control" required>
-                                </div>
-
-                                <!-- Phone -->
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" name="phone" id="phone" class="form-control">
-                                </div>
-
-                                <!-- Buttons -->
-                                <div class="">
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                    <a href="{{ route('pelanggan.index') }}"
-                                        class="btn btn-outline-secondary ms-2">Batal</a>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" name="last_name" id="last_name"
+                                        class="form-control @error('last_name') is-invalid @enderror"
+                                        placeholder="Nama Belakang" value="{{ old('last_name') }}" required>
+                                    <label for="last_name">Last Name</label>
+                                    @error('last_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
 
+                        {{-- Group: Biodata --}}
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="date" name="birthday" id="birthday"
+                                        class="form-control @error('birthday') is-invalid @enderror"
+                                        placeholder="Tanggal Lahir" value="{{ old('birthday') }}">
+                                    <label for="birthday">Birthday</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select id="gender" name="gender"
+                                        class="form-select @error('gender') is-invalid @enderror">
+                                        <option value="" disabled selected>Pilih Gender</option>
+                                        <option value="Male" {{ old('gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                                        <option value="Female" {{ old('gender') == 'Female' ? 'selected' : '' }}>Female
+                                        </option>
+                                        <option value="Other" {{ old('gender') == 'Other' ? 'selected' : '' }}>Other
+                                        </option>
+                                    </select>
+                                    <label for="gender">Gender</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4 text-muted opacity-25">
+
+                        <h5 class="mb-3 fw-bold text-primary">Kontak</h5>
+
+                        {{-- Group: Kontak --}}
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="email" name="email" id="email"
+                                        class="form-control @error('email') is-invalid @enderror"
+                                        placeholder="name@example.com" value="{{ old('email') }}" required>
+                                    <label for="email">Email Address</label>
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" name="phone" id="phone"
+                                        class="form-control @error('phone') is-invalid @enderror"
+                                        placeholder="Nomor Telepon" value="{{ old('phone') }}">
+                                    <label for="phone">Phone Number</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary px-4 py-2 fw-bold">
+                                <i class="fas fa-save me-1"></i> Simpan Data Baru
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            {{-- KOLOM KANAN: FILE UPLOAD --}}
+            <div class="col-12 col-xl-4">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                        <h5 class="mb-0 fw-bold text-primary">File Pendukung</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-light border-0 small mb-3 p-3 rounded-3" role="alert">
+                            <i class="fas fa-info-circle me-1 text-info"></i>
+                            Anda dapat langsung mengupload dokumen pendukung saat membuat data pelanggan ini.
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="files" class="form-label small fw-bold text-muted">Pilih File</label>
+                            <input type="file" name="files[]" multiple class="form-control" id="inputGroupFile">
+                            <div class="form-text text-xs">Gunakan Ctrl/Cmd untuk memilih banyak file.</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    {{-- end main content --}}
+    </form>
+
 @endsection
