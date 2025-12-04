@@ -16,9 +16,9 @@ class CreateFirstUser extends Seeder
     {
         // 1. Buat User Admin Manual
         User::create([
-            'name' => 'Admin',
-            'email' => 'gatot@pcr.ac.id',
-            'password' => Hash::make('gatotkaca')
+            'name' => 'geta',
+            'email' => 'geta24si@mahasiswa.pcr',
+            'password' => Hash::make('geta2125')
         ]);
 
         // 2. Buat 50 User Random (dengan foto otomatis dari Factory)

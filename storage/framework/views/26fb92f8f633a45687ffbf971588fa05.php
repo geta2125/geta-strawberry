@@ -1,11 +1,12 @@
 <nav class="navbar navbar-top navbar-expand navbar-dashboard navbar-dark ps-0 pe-2 pb-0">
     <div class="container-fluid px-0">
-        @if (session('success'))
+        <?php if(session('success')): ?>
             <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @endif
+        <?php endif; ?>
 
         <div class="d-flex justify-content-between w-100" id="navbarSupportedContent">
             <div class="d-flex align-items-center">
@@ -49,7 +50,7 @@
                                     <div class="col-auto">
                                         <!-- Avatar -->
                                         <img alt="Image placeholder"
-                                            src="{{ asset('assets-admin/img/team/profile-picture-1.jpg') }}"
+                                            src="<?php echo e(asset('assets-admin/img/team/profile-picture-1.jpg')); ?>"
                                             class="avatar-md rounded">
                                     </div>
                                     <div class="col ps-0 ms-2">
@@ -71,7 +72,7 @@
                                     <div class="col-auto">
                                         <!-- Avatar -->
                                         <img alt="Image placeholder"
-                                            src="{{ asset('assets-admin/img/team/profile-picture-2.jpg') }}"
+                                            src="<?php echo e(asset('assets-admin/img/team/profile-picture-2.jpg')); ?>"
                                             class="avatar-md rounded">
                                     </div>
                                     <div class="col ps-0 ms-2">
@@ -93,7 +94,7 @@
                                     <div class="col-auto">
                                         <!-- Avatar -->
                                         <img alt="Image placeholder"
-                                            src="{{ asset('assets-admin/img/team/profile-picture-3.jpg') }}"
+                                            src="<?php echo e(asset('assets-admin/img/team/profile-picture-3.jpg')); ?>"
                                             class="avatar-md rounded">
                                     </div>
                                     <div class="col ps-0 m-2">
@@ -124,14 +125,14 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown ms-lg-3">
-                    @if(Auth::check())
+                    <?php if(Auth::check()): ?>
                             <a class="nav-link dropdown-toggle pt-1 px-0" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="media d-flex align-items-center">
                                     <img class="avatar rounded-circle" alt="Image placeholder"
-                                        src="{{ asset('assets-admin/img/team/profile-picture-3.jpg') }}">
+                                        src="<?php echo e(asset('assets-admin/img/team/profile-picture-3.jpg')); ?>">
                                     <div class="media-body ms-2 text-dark align-items-center d-none d-lg-block">
-                                        <span class="mb-0 font-small fw-bold text-gray-900">{{Auth::user()->name}} - {{session('last_login')}}</span>
+                                        <span class="mb-0 font-small fw-bold text-gray-900"><?php echo e(Auth::user()->name); ?> - <?php echo e(session('last_login')); ?></span>
                                     </div>
                                 </div>
                             </a>
@@ -155,7 +156,7 @@
                                     Settings
                                 </a>
                                 <div role="separator" class="dropdown-divider my-1"></div>
-                                <a class="dropdown-item d-flex align-items-center" href="{{route('auth.logout')}}">
+                                <a class="dropdown-item d-flex align-items-center" href="<?php echo e(route('auth.logout')); ?>">
                                     <svg class="dropdown-icon text-danger me-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -165,11 +166,12 @@
                                     Logout
                                 </a>
                             </div>
-                            @else
-                            <button class="btn btn-primary"><a href="{{route('auth')}}" class="text-white">Login</a></button>
-                            @endif
+                            <?php else: ?>
+                            <button class="btn btn-primary"><a href="<?php echo e(route('auth')); ?>" class="text-white">Login</a></button>
+                            <?php endif; ?>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
+<?php /**PATH D:\2SIA_Geta_framework\laragon-6.0-minimal\laragon-6.0-minimal\www\geta-strawberry\resources\views/layouts/admin/header.blade.php ENDPATH**/ ?>

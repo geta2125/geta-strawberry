@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use App\Models\Multipleupload;
+use Illuminate\Support\Facades\Auth;
 
 class PelangganController extends Controller
 {
@@ -12,6 +13,10 @@ class PelangganController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Auth::check()) {
+            //Redirect ke halaman login
+            return redirect()->route('auth')->withErrors('Silahkan login dulu ya');
+        }
         // Kolom yang difilter biasa
         $filterableColumns = ['gender'];
 
