@@ -5,6 +5,21 @@
 
     <div class="card border-0 shadow mb-4">
         <div class="card-body">
+            <?php if(session('success')): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Sukses!</strong> <?php echo e(session('success')); ?>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+
+            <?php if(session('error')): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> <?php echo e(session('error')); ?>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
 
             
             <?php if($errors->any()): ?>
@@ -68,6 +83,34 @@ unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">Role</label>
+                    <select name="role" class="form-select <?php $__errorArgs = ['role'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" required>
+                        <option value="Super Admin" <?php echo e($user->role == "Super Admin" ? 'selected' : ''); ?>>Super Admin</option>
+                        <option value="Administrator" <?php echo e($user->role == "Administrator" ? 'selected' : ''); ?>>Administrator</option>
+                        <option value="Pelanggan" <?php echo e($user->role == "Pelanggan" ? 'selected' : ''); ?>>Pelanggan</option>
+                        <option value="Mitra" <?php echo e($user->role == "Mitra" ? 'selected' : ''); ?>>Mitra</option>
+                    </select>
+
+                    <?php $__errorArgs = ['role'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <div class="invalid-feedback"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">Password (opsional)</label>
                     <input type="password" name="password" class="form-control <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -92,7 +135,7 @@ unset($__errorArgs, $__bag); ?>
 
                 <div class="mb-3">
                     <label class="form-label">Foto Profil</label>
-                    <input type="file" name="profile_picture"
+                    <input type="file" name="profile_picture" accept="image/jpeg,image/png,image/jpg,image/gif"
                         class="form-control <?php $__errorArgs = ['profile_picture'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

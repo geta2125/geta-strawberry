@@ -24,7 +24,7 @@
                 <p class="mb-0">Form untuk menambahkan data user baru.</p>
             </div>
             <div>
-                <a href="{{ route('pelanggan.index') }}" class="btn btn-primary">
+                <a href="{{ route('user.index') }}" class="btn btn-primary">
                     <i class="far fa-question-circle me-1"></i> Kembali
                 </a>
             </div>
@@ -35,6 +35,30 @@
         <div class="col-12 mb-4">
             <div class="card border-0 shadow components-section">
                 <div class="card-body">
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Sukses!</strong> {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Error!</strong> {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
 
                     {{-- FORM TAMBAH USER + FOTO PROFIL --}}
                     <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
@@ -63,6 +87,25 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                            </div>
+
+                            {{-- Role --}}
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select name="role" id="role" class="form-select" required>
+                                    <option value="">Pilih Role</option>
+                                    <option value="Super Admin" {{ old('role') == 'Super Admin' ? 'selected' : '' }}>Super
+                                        Admin</option>
+                                    <option value="Administrator" {{ old('role') == 'Administrator' ? 'selected' : '' }}>
+                                        Administrator</option>
+                                    <option value="Pelanggan" {{ old('role') == 'Pelanggan' ? 'selected' : '' }}>Pelanggan
+                                    </option>
+                                    <option value="Mitra" {{ old('role') == 'Mitra' ? 'selected' : '' }}>Mitra</option>
+                                </select>
+
+                                @error('role')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-lg-4 col-sm-12">

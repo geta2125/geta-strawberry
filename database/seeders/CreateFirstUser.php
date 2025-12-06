@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Faker\Factory as Faker;
 
 class CreateFirstUser extends Seeder
 {
@@ -14,6 +15,7 @@ class CreateFirstUser extends Seeder
      */
     public function run(): void
     {
+        $faker = Faker::create('id_ID');
         // 1. Buat User Admin Manual
         User::create([
             'name' => 'geta',
@@ -22,6 +24,19 @@ class CreateFirstUser extends Seeder
         ]);
 
         // 2. Buat 50 User Random (dengan foto otomatis dari Factory)
-        User::factory(50)->create();
+        for ($i = 0; $i < 50; $i++) {
+            User::create([
+                'name' => $faker->name(),
+                'email' => $faker->unique()->safeEmail(),
+                'password' => Hash::make('password123'),
+            ]);
+        }
+        echo "Berhasil membuat 51 users! \n";
+        echo "1 Admin \n";
+        echo "50 User Dummy dengan nama random \n";
     }
 }
+
+//super admin saya yaitu :
+//geta24@mahasiswa.pcr
+//pw:geta2125

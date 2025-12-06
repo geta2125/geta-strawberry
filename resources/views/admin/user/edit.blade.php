@@ -7,6 +7,19 @@
 
     <div class="card border-0 shadow mb-4">
         <div class="card-body">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Sukses!</strong> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error!</strong> {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
 
             {{-- Tampil error validasi kalau ada --}}
             @if ($errors->any())
@@ -42,6 +55,20 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">Role</label>
+                    <select name="role" class="form-select @error('role') is-invalid @enderror" required>
+                        <option value="Super Admin" {{ $user->role == "Super Admin" ? 'selected' : '' }}>Super Admin</option>
+                        <option value="Administrator" {{ $user->role == "Administrator" ? 'selected' : '' }}>Administrator</option>
+                        <option value="Pelanggan" {{ $user->role == "Pelanggan" ? 'selected' : '' }}>Pelanggan</option>
+                        <option value="Mitra" {{ $user->role == "Mitra" ? 'selected' : '' }}>Mitra</option>
+                    </select>
+
+                    @error('role')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">Password (opsional)</label>
                     <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
                         placeholder="Isi jika ingin ganti password">
@@ -52,7 +79,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Foto Profil</label>
-                    <input type="file" name="profile_picture"
+                    <input type="file" name="profile_picture" accept="image/jpeg,image/png,image/jpg,image/gif"
                         class="form-control @error('profile_picture') is-invalid @enderror">
                     @error('profile_picture')
                         <div class="invalid-feedback">{{ $message }}</div>

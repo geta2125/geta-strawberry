@@ -71,6 +71,7 @@ class UserController extends Controller
         // 1. Update data dasar
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->role = $request->role;
 
         // 2. Cek apakah password diisi? Kalau ya, update. Kalau tidak, biarkan lama.
         if ($request->filled('password')) {
